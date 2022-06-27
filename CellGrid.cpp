@@ -41,13 +41,16 @@ void CellGrid::goToNextGeneration() {
         cellCoors coors = *it;
         for (int x = coors.first-1; x <= coors.first+1; ++x) {
             for (int y = coors.second-1; y <= coors.second+1; ++y) {
-                ui neighbours = countAdjacentSquares(x, y);
-                if (isAliveAtPosition(x, y)) {
-                    if (neighbours == 2U || neighbours == 3U) {
+                cellMatrix::iterator res = newCells.find({x, y});
+                if (res == newCells.end()) {
+                    ui neighbours = countAdjacentSquares(x, y);
+                    if (isAliveAtPosition(x, y)) {
+                        if (neighbours == 2U || neighbours == 3U) {
+                            newCells.insert({x, y});
+                        }
+                    } else if (neighbours == 3U) {
                         newCells.insert({x, y});
                     }
-                } else if (neighbours == 3U) {
-                    newCells.insert({x, y});
                 }
             }
         }
